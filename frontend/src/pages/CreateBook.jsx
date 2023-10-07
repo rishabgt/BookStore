@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import BackButton from "../components/BackButton";
 import Spinner from "../components/Spinner";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const CreateBook = () => {
   const [title, setTitle] = useState("");
@@ -10,6 +10,7 @@ const CreateBook = () => {
   const [publishYear, setPublishYear] = useState("");
   const [loading, setLoading] = useState("");
   const navigate = useNavigate();
+  const { state } = useLocation();
   const handleSaveBook = () => {
     const data = {
       title,
@@ -31,7 +32,7 @@ const CreateBook = () => {
   };
   return (
     <div className="p-4">
-      <BackButton />
+      <BackButton viewType={state} />
       <h1 className="text-3xl my-4">Create Book</h1>
       {loading ? <Spinner /> : ""}
       <div className="flex flex-col border-2 border-sky-400 rounded-xl w-[600px] p-4 mx-auto">
