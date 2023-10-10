@@ -13,7 +13,14 @@ const Home = () => {
   const [books, setBooks] = useState([]);
   const [loading, setLoading] = useState(false);
   const [showType, setShowType] = useState("table");
+  console.log("RENDER..");
   useEffect(() => {
+    let viewType = sessionStorage.getItem("view");
+    if (viewType === null) {
+      sessionStorage.setItem("view", "table");
+    } else {
+      setShowType(sessionStorage.getItem("view"));
+    }
     setLoading(true);
     axios
       .get("http://localhost:5555/books")
@@ -31,13 +38,19 @@ const Home = () => {
       <div className="flex justify-center items-center gap-x-4">
         <button
           className="bg-sky-300 hover:bg-sky-600 px-4 py-1 rounded-lg"
-          onClick={() => setShowType("table")}
+          onClick={() => {
+            sessionStorage.setItem("view", "table");
+            setShowType("table");
+          }}
         >
           Table
         </button>
         <button
           className="bg-yellow-300 hover:bg-yellow-600 px-4 py-1 rounded-lg"
-          onClick={() => setShowType("card")}
+          onClick={() => {
+            sessionStorage.setItem("view", "card");
+            setShowType("card");
+          }}
         >
           Card
         </button>
@@ -50,7 +63,7 @@ const Home = () => {
       </div>
       {loading ? (
         <Spinner />
-      ) : showType === "table" ? (
+      ) : sessionStorage.getItem("view") == "table" ? (
         <BooksTable books={books} />
       ) : (
         <BooksCard books={books} />
